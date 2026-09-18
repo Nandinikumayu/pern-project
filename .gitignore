@@ -1,0 +1,8 @@
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+frontend/dist/
+.env
+*.log
+backend/tests/api_check.js
+backend/tests/test_cust.js

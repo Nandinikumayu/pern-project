@@ -1,0 +1,15 @@
+{
+  "name": "pern-industrial-erp",
+  "version": "1.0.0",
+  "description": "PERN Industrial ERP Management System (Enquiry -> Quotation -> Sales Order -> Inventory Reservation -> Dispatch)",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "build": "cd frontend && npm run build",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "test": "cd backend && npm test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
