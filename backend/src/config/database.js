@@ -1,5 +1,10 @@
-const { Pool } = require('pg');
-const sqlite3 = require('sqlite3').verbose();
+let sqlite3 = null;
+try {
+  sqlite3 = require('sqlite3').verbose();
+} catch (e) {
+  console.warn('[DB] sqlite3 module not loaded:', e.message);
+}
+
 const fs = require('fs');
 const path = require('path');
 
@@ -16,7 +21,7 @@ function initDatabase() {
       connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/pern_erp',
     });
     console.log('[DB] Using standard PostgreSQL connection pool.');
-  } else {
+  } else if (sqlite3) {
     try {
       // Use SQLite persistent database on disk so data persists across restarts & user changes
       sqliteDb = new sqlite3.Database(dbFilePath);
@@ -30,6 +35,13 @@ function initDatabase() {
       pool = new adapter.Pool();
       isPgMem = true;
     }
+  } else {
+    console.log('[DB] Fallback to pg-mem in-memory engine.');
+    const { newDb } = require('pg-mem');
+    const memDbInstance = newDb({ noAstCoverageCheck: true });
+    const adapter = memDbInstance.adapters.createPg();
+    pool = new adapter.Pool();
+    isPgMem = true;
   }
 }
 
